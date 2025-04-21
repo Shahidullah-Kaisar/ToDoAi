@@ -8,6 +8,20 @@ const TodoForm = ({ fetchTasks }) => {
   const [showAlarmPicker, setShowAlarmPicker] = useState(false); // Toggle for alarm picker
   const [alarmTime, setAlarmTime] = useState(null); // State for alarm time
 
+  // Get today's date and the last date of the current month
+  const currentDate = new Date();
+  
+  const today = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate()
+  );
+  const lastDayOfMonth = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    0
+  );
+
   const addTask = async (e) => {
     e.preventDefault();
     if (!text.trim()) return;
@@ -52,9 +66,11 @@ const TodoForm = ({ fetchTasks }) => {
           <DatePicker
             selected={alarmTime}
             onChange={(date) => setAlarmTime(date)}
+            minDate={today} // ⬅️ Restrict to today or later
+            maxDate={lastDayOfMonth} // ⬅️ Restrict to current month end date
             showTimeSelect
             timeFormat="HH:mm"
-            timeIntervals={15}
+            timeIntervals={1}
             timeCaption="Time"
             dateFormat="MMMM d, yyyy h:mm aa"
             className="w-full p-2 border border-gray-500 rounded-lg bg-gray-800 text-white focus:outline-none focus:border-purple-500"
